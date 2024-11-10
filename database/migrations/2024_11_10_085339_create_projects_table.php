@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->string('image')->nullable();
+            $table->string('image', 1024)->nullable();
             $table->foreignId('type_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

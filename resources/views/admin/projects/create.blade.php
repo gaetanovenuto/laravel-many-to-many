@@ -3,7 +3,7 @@
 @section('main-content')
     <div class="container">
         <h1>Crea un nuovo progetto</h1>
-        <form action="{{ route('admin.projects.store') }}" method="POST">
+        <form action="{{ route('admin.projects.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <label>Nome:</label>
             <input type="text" name="name" class="form-control" required>
@@ -23,7 +23,7 @@
             </select>
 
             <label>Immagine:</label>
-            <input type="text" name="image" class="form-control">
+            <input type="file" name="image" class="form-control">
             <button type="submit" class="btn btn-success mt-3">Crea</button>
         </form>
     </div>

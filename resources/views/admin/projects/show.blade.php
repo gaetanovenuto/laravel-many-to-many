@@ -11,10 +11,13 @@
             @endforeach
         </ul>
         <div class="mb-4">
-            <img src="{{ $project->image }}" alt="{{ $project->name }}" class="rounded">
+            @if($project->image)
+                <img src="{{ asset('/storage/'.$project->image) }}" alt="{{ $project->name }}" class="rounded" style="height: 150px;">
+            @endif
+            
         </div>
         <a href="{{ route('admin.projects.edit', $project) }}" class="btn btn-warning">Modifica</a>
-        <form action="{{ route('admin.projects.destroy', $project) }}" method="POST" style="display:inline;">
+        <form action="{{ route('admin.projects.destroy', $project) }}" method="POST" style="display:inline">
             @csrf
             @method('DELETE')
             <button type="submit" class="btn btn-danger" onclick="return confirm('Sei sicuro di voler eliminare questo progetto?')">Elimina</button>

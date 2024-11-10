@@ -9,6 +9,8 @@ use App\Models\Technology;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
+use Illuminate\Support\Facades\Storage;
+
 class ProjectController extends Controller
 {
     public function index()
@@ -31,10 +33,17 @@ class ProjectController extends Controller
             'type_id' => 'required|exists:types,id',
             'technologies' => 'array',
             'technologies.*' => 'exists:technologies,id',
-            'image' => 'nullable|string',
+            'image' => 'nullable|image|max:1024',
         ]);
 
         $data['slug'] = Str::slug($data['name']);
+
+        if (isset($data['image'])) {
+            $imgPath = Storage::put('uploads', $data['image']);
+            $data['image'] = $imgPath;
+        };
+        
+
         $project = Project::create($data);
         $project->technologies()->attach($request->technologies);
 
@@ -61,10 +70,26 @@ class ProjectController extends Controller
             'type_id' => 'required|exists:types,id',
             'technologies' => 'array',
             'technologies.*' => 'exists:technologies,id',
-            'image' => 'nullable|string',
+            'image' => 'nullable|image|max:1024',
+            'remove_image' => 'nullable'
         ]);
 
         $data['slug'] = Str::slug($data['name']);
+
+        if (isset($data['image'])) {
+
+            if ($project->image) {
+                Storage::delete($project->image);
+                $project->image = null;
+            }
+            $imgPath = Storage::put('uploads', $data['image']);
+            $data['image'] = $imgPath;
+        }
+        else if (isset($data['remove_image']) && $project->image) {
+            Storage::delete($project->image);
+            $project->image = null;
+        }
+
         $project->update($data);
         $project->technologies()->sync($request->technologies);
 
@@ -73,7 +98,11 @@ class ProjectController extends Controller
 
     public function destroy(Project $project)
     {
-        $project->technologies()->detach();
+        
+        if ($project->image) {
+            Storage::delete($project->image);
+        }
+
         $project->delete();
         return redirect()->route('admin.projects.index')->with('success', 'Progetto eliminato con successo');
     }
