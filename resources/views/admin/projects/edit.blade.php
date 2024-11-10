@@ -1,60 +1,31 @@
 @extends('layouts.app')
 
 @section('main-content')
+    <div class="container">
+        <h1>Modifica progetto: {{ $project->name }}</h1>
+        <form action="{{ route('admin.projects.update', $project) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <label>Nome:</label>
+            <input type="text" name="name" value="{{ $project->name }}" class="form-control" required>
 
-@if ($errors->any())
-    <div class="alert alert-danger mb-4">
-        <ul class="mb-0">
-            @foreach ($errors->all() as $error)
-                <li>
-                    {{ $error }}
-                </li>
-            @endforeach
-        </ul>
+            <label>Tipologia:</label>
+            <select name="type_id" class="form-control">
+                @foreach ($types as $type)
+                    <option value="{{ $type->id }}" {{ $type->id == $project->type_id ? 'selected' : '' }}>{{ $type->name }}</option>
+                @endforeach
+            </select>
+
+            <label>Tecnologie:</label>
+            <select name="technologies[]" class="form-control" multiple>
+                @foreach ($technologies as $technology)
+                    <option value="{{ $technology->id }}" {{ $project->technologies->contains($technology) ? 'selected' : '' }}>{{ $technology->name }}</option>
+                @endforeach
+            </select>
+
+            <label>Immagine:</label>
+            <input type="text" name="image" value="{{ $project->image }}" class="form-control">
+            <button type="submit" class="btn btn-success mt-3">Aggiorna</button>
+        </form>
     </div>
-@endif
-<form action="{{route('admin.projects.update', $project->id)}}" method="POST">
-    @method('PUT')
-    @csrf
-    <div class="mb-3">
-        <label for="name" class="form-label">Nome: <span class="text-danger">*</span></label>
-        <input type="text" value="{{$project->name}}" class="form-control" id="name" name="name" placeholder="Inserisci il nome del progetto" required>
-    </div>
-
-    <div class="mb-3">
-        <label for="description" class="form-label">Descrizione: <span class="text-danger">*</span></label>
-        <input type="textarea" value="{{$project->description}}" class="form-control" id="description" name="description" placeholder="Inserisci una descrizione per il progetto" required>
-    </div>
-
-    <div class="mb-3">
-        <label for="creation_date" class="form-label">Data di Creazione: <span class="text-danger">*</span></label>
-        <input type="date" value="{{$project->creation_date}}" class="form-control" id="creation_date" name="creation_date" placeholder="Inserisci la data di creazione del progetto" aria-describedby="creationHelp" required>
-        <div id="creationHelp" class="form-text">Inserisci la data di creazione del progetto.</div>
-    </div>
-
-    <div class="mb-3">
-        <label for="expiring_date" class="form-label">Scadenza:</label>
-        <input type="date" value="{{$project->expiring_date}}" class="form-control" id="expiring_date" name="expiring_date" placeholder="Inserisci la scadenza del progetto" aria-describedby="expireHelp">
-        <div id="expireHelp" class="form-text">Inserisci la scadenza del progetto.</div>
-    </div>
-
-    <div class="mb-3">
-        <label for="label_tag" class="form-label">Tag:</label>
-        <input type="text" value="{{$project->label_tag}}" class="form-control" id="label_tag" name="label_tag" placeholder="Inserisci un tag identificativo del progetto">
-    </div>
-
-    <div class="mb-3">
-        <label for="price" class="form-label">Prezzo: <span class="text-danger">*</span></label>
-        <input type="number" value='{{$project->price}}' class="form-control" id="price" name="price" placeholder="Inserisci un prezzo" required max="10000" min="0">
-    </div>
-
-    <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" id="completed" name="completed">
-        <label class="form-check-label" for="completed">Completato</label>
-    </div>
-        
-    <button type="submit" class="btn btn-primary">Modifica</button>
-
-</form>
-
 @endsection

@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('technologies', function (Blueprint $table) {
             $table->id();
             $table->string('name', 64);
-            $table->string('slug', 64);
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('technologies');
+        Schema::dropIfExists('tecnologies');
     }
 };

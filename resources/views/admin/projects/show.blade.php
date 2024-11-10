@@ -1,35 +1,23 @@
 @extends('layouts.app')
 
 @section('main-content')
-
-<table class="table table-hover">
-    <thead class="thead-dark">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Description</th>
-            <th scope="col">Date of Creation</th>
-            <th scope="col">Endline</th>
-            <th scope="col">Tag</th>
-            <th scope="col">Price</th>
-            <th scope="col">Completed</th>
-            <th scope="col"></th>
-        </tr>
-    </thead>
-
-    <tbody>
-        <tr>
-            <th scope="row">{{$project->id}}</th>
-            <td>{{$project->name}}</td>
-            <td>{{$project->description}}</td>
-            <td>{{$project->creation_date}}</td>
-            <td>{{$project->expiring_date}}</td>
-            <td>{{$project->label_tag}}</td>
-            <td>{{$project->price}}</td>
-            <td>{{$project->completed}}</td>
-            <td><a class="btn btn-primary" href="{{route('admin.projects.edit', $project->id)}}">Modifica</a></td>
-        </tr>
-   </tbody>
-</table>
-
+    <div class="container">
+        <h1>{{ $project->name }}</h1>
+        <div>Tipologia: {{ $project->type->name }}</div>
+        <div>Tecnologie:</div>
+        <ul>
+            @foreach ($project->technologies as $technology)
+                <li>{{ $technology->name }}</li>
+            @endforeach
+        </ul>
+        <div class="mb-4">
+            <img src="{{ $project->image }}" alt="{{ $project->name }}" class="rounded">
+        </div>
+        <a href="{{ route('admin.projects.edit', $project) }}" class="btn btn-warning">Modifica</a>
+        <form action="{{ route('admin.projects.destroy', $project) }}" method="POST" style="display:inline;">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Sei sicuro di voler eliminare questo progetto?')">Elimina</button>
+        </form>
+    </div>
 @endsection

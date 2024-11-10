@@ -2,46 +2,34 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Project;
+use App\Models\Type;
 use App\Models\Technology;
-
-// Helpers
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
+use Faker\Factory as Faker;
 
 class ProjectSeeder extends Seeder
 {
     /**
-        * Run the database seeds.
-    */
-    public function run(): void
+     * Run the database seeds.
+     */
+    public function run()
     {
-        Schema::withoutForeignKeyConstraints(function() {
-            Project::truncate();
-        });
-
-        
+        $faker = Faker::create();
+        $types = Type::all();
         $technologies = Technology::all();
-
+      
         for ($i = 0; $i < 25; $i++) {
-            $projectName = fake()->sentence();
-            $sluggedName = str()->slug($projectName);
-
+            
             $project = Project::create([
-                'name' => $projectName,
-                'description' => fake()->paragraph(),
-                'slug' => $sluggedName,
-                'creation_date' => now(),
-                'expiring_date' => fake()->dateTimeThisMonth('+7 days'),
-                'label_tag' => fake()->word(),
-                'price' => rand(0, 1000),
-                'completed' => fake()->boolean(),
+                'name' => $faker->sentence(3),
+                'slug' => Str::slug($faker->sentence(3)),
+                'image' => $faker->imageUrl(320, 240, 'business', true),
+                'type_id' => $types->random()->id,
             ]);
 
-            // Associa casualmente delle tecnologie al progetto
-            $project->technologies()
-                    ->attach($technologies->random(rand(1, 3))->pluck('id')->toArray()
-            );
+            $project->technologies()->attach($technologies->random(rand(1, 3))->pluck('id'));
         }
     }
 }

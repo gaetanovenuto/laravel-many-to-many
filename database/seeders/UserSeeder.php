@@ -7,19 +7,18 @@ use Illuminate\Database\Seeder;
 
 // Models
 
-use App\Models\Type;
+use App\Models\User;
 
-class TypeSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $types = ['HTML', 'CSS', 'Javascript', 'Vue.js', 'PHP', 'Laravel', 'MySQL'];
-
-        foreach ($types as $type) {
-        Type::create(['name' => $type]);
-    }
+        User::factory()->create([
+            'name' => 'Gaetano',
+            'email' => 'gaetanovenuto99@live.it'
+        ]);
     }
 }

@@ -1,4 +1,31 @@
-# Passi da fare per poter utilizzare il template di Laravel
+Creare una lista di progetti, il quale ogni progetto è collegato una tipologia e più tecnologie.
+
+-progetti
+-tipologie
+-tecnologie
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- # Passi da fare per poter utilizzare il template di Laravel
 
 0. Creo la repository a partire dal template e mi clono la repository appena creata
 
@@ -58,4 +85,4 @@ Tutte queste 4 view, saranno messe in una cartella dentro views, nominata come l
 - Comando per eseguire migrate:reset + migrate: php artisan migrate:refresh
 - Comando per eseguire migrate + db:seed: php artisan migrate --seed / php artisan migrate:refresh --seed
 - Comando per vedere la lista delle rotte definite nell'applicazione: php artisan route:list
-- Comando per creare un model, una migration, un seeder e un resource controller tutto insieme: php artisan make:model NomeRisorsa -msr
+- Comando per creare un model, una migration, un seeder e un resource controller tutto insieme: php artisan make:model NomeRisorsa -msr -->

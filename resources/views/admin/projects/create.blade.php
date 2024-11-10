@@ -1,62 +1,30 @@
 @extends('layouts.app')
 
 @section('main-content')
+    <div class="container">
+        <h1>Crea un nuovo progetto</h1>
+        <form action="{{ route('admin.projects.store') }}" method="POST">
+            @csrf
+            <label>Nome:</label>
+            <input type="text" name="name" class="form-control" required>
+            
+            <label>Tipologia:</label>
+            <select name="type_id" class="form-control">
+                @foreach ($types as $type)
+                    <option value="{{ $type->id }}">{{ $type->name }}</option>
+                @endforeach
+            </select>
 
-@if ($errors->any())
-    <div class="alert alert-warning mb-4">
-        <ul class="mb-2">
-            @foreach ($errors->all() as $error)
-                <li>
-                    {{ $error }}
-                </li>
-            @endforeach
-        </ul>
+            <label>Tecnologie:</label>
+            <select name="technologies[]" class="form-control" multiple>
+                @foreach ($technologies as $technology)
+                    <option value="{{ $technology->id }}">{{ $technology->name }}</option>
+                @endforeach
+            </select>
+
+            <label>Immagine:</label>
+            <input type="text" name="image" class="form-control">
+            <button type="submit" class="btn btn-success mt-3">Crea</button>
+        </form>
     </div>
-@endif
-<form action="{{ route('admin.projects.store')  }}" method="POST">
-    @csrf
-
-    <div class="mb-4">
-        <label for="name" class="form-label">
-            Nome: <span class="text-danger">*</span>
-        </label>
-        <input type="text" value="{{ old('name') }}" class="form-control" id="name" name="name" placeholder="Inserisci il nome del progetto" required>
-    </div>
-
-    <div class="mb-4">
-        <label for="description" class="form-label">
-            Descrizione: <span class="text-danger">*</span>
-        </label>
-        <input type="textarea" value="{{ old('description') }}" class="form-control" id="description" name="description" placeholder="Inserisci una descrizione per il progetto" required>
-    </div>
-
-
-    <div class="mb-4">
-        <label for="expiring_date" class="form-label">
-            Scadenza:
-        </label>
-        <input type="date" value="{{ old('expiring_date') }}" class="form-control" id="expiring_date" name="expiring_date" placeholder="Inserisci la scadenza del progetto" aria-describedby="expireHelp">
-        <div id="expireHelp" class="form-text">
-            Inserisci la scadenza del progetto.
-        </div>
-    </div>
-
-    <div class="mb-4">
-        <label for="label_tag" class="form-label">Tag:</label>
-        <input type="text" value="{{ old('label_tag') }}" class="form-control" id="label_tag" name="label_tag" placeholder="Inserisci il tag">
-    </div>
-
-    <div class="mb-4">
-        <label for="price" class="form-label">
-            Prezzo: <span class="text-danger">*</span>
-        </label>
-        <input type="number" value='{{ old('price', 0)}}' class="form-control" id="price" name="price" placeholder="Inserisci un prezzo" required max="10000" min="0">
-    </div>
-        
-    <button type="submit" class="btn btn-primary">
-        Crea progetto
-    </button>
-
-</form>
-
 @endsection
